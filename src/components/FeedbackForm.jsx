@@ -1,5 +1,9 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Use a properly declared constant. Assigning to an undeclared variable
+// (e.g. `BASE_URL = ...`) throws in strict mode and will stop the app from loading.
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function FeedbackForm() {
   const navigate = useNavigate();
@@ -48,7 +52,7 @@ export default function FeedbackForm() {
         formType: selectedForm?.title || "General Feedback",
       };
 
-      const res = await fetch("http://localhost:5000/api/feedback", {
+      const res = await fetch(`${BASE_URL}/api/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

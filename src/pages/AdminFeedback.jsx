@@ -1,5 +1,8 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Properly declare BASE_URL to avoid runtime ReferenceError which breaks the app.
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function AdminFeedback() {
   const navigate = useNavigate();
@@ -14,7 +17,7 @@ export default function AdminFeedback() {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/feedback");
+        const res = await fetch(`${BASE_URL}/api/feedback`);
         if (!res.ok) throw new Error("Failed to fetch feedbacks");
         const data = await res.json();
 
@@ -91,13 +94,13 @@ export default function AdminFeedback() {
     if (!window.confirm("Are you sure you want to clear all feedback analytics?")) return;
 
     try {
-      const feedbackRes = await fetch("http://localhost:5000/api/feedback");
+      const feedbackRes = await fetch(`${BASE_URL}/api/feedback`);
       const allFeedbacks = await feedbackRes.json();
 
       // Delete all feedback entries one by one (for safety)
       await Promise.all(
         allFeedbacks.map((f) =>
-          fetch(`http://localhost:5000/api/feedback/${f.id}`, { method: "DELETE" })
+          fetch(`${BASE_URL}/api/feedback ${f.id}`, { method: "DELETE" })
         )
       );
 
